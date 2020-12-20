@@ -16,8 +16,8 @@ object Utils {
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
-        var output:String
-        output = payload.replace("а", "a", false)
+        var output:String = payload.replace(" ", divider, false)
+        output = output.replace("а", "a", false)
         output = output.replace("б", "b", false)
         output = output.replace("в", "v", false)
         output = output.replace("г", "g", false)
@@ -83,16 +83,16 @@ object Utils {
         output = output.replace("Э", "E", false)
         output = output.replace("Ю", "Yu", false)
         output = output.replace("Я", "Ya", false)
-        output = output.replace(" ", divider, false)
+
         return output
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
         val initials:String?
         when {
-            firstName == " "&& lastName == "" -> initials = null
-            firstName != null && lastName == null -> initials = firstName.capitalize().get(0).toString()
-            firstName != null && lastName != null -> initials = firstName.capitalize().get(0).toString() + lastName.capitalize().get(0).toString()
+            firstName.isNullOrEmpty() -> initials = null
+            firstName.isNotBlank() && lastName.isNullOrEmpty() -> initials = firstName?.capitalize()?.get(0).toString()
+            firstName.isNotBlank() && lastName!!.isNotBlank() -> initials = firstName?.capitalize()?.get(0).toString() + lastName?.capitalize()?.get(0).toString()
             else -> initials = null
         }
         return initials
