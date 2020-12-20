@@ -90,9 +90,9 @@ object Utils {
     fun toInitials(firstName: String?, lastName: String?): String? {
         val initials:String?
         when {
-            firstName.isNullOrEmpty() -> initials = null
-            firstName.isNotBlank() && lastName.isNullOrEmpty() -> initials = firstName?.capitalize()?.get(0).toString()
-            firstName.isNotBlank() && lastName!!.isNotBlank() -> initials = firstName?.capitalize()?.get(0).toString() + lastName?.capitalize()?.get(0).toString()
+            !firstName.isNullOrBlank() && lastName.isNullOrBlank() -> initials = firstName?.capitalize()?.get(0).toString()
+            firstName.isNullOrBlank() && !lastName.isNullOrBlank() -> initials = lastName?.capitalize()?.get(0).toString()
+            !firstName.isNullOrBlank() && !lastName.isNullOrBlank() -> initials = firstName?.capitalize()?.get(0).toString() + lastName?.capitalize()?.get(0).toString()
             else -> initials = null
         }
         return initials
