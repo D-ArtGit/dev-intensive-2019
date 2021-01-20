@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send){
+        if (v?.id == R.id.iv_send && messageEt.text.isNotEmpty()){
             val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
             messageEt.setText("")
             val (r, g, b) = color
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
     }
 
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        return if (actionId == EditorInfo.IME_ACTION_DONE) {
+        return if (actionId == EditorInfo.IME_ACTION_DONE && messageEt.text.isNotEmpty()) {
             val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
             messageEt.setText("")
             val (r, g, b) = color

@@ -3,12 +3,8 @@ package ru.skillbranch.devintensive.extensions
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import ru.skillbranch.devintensive.R
 
 fun Activity.hideKeyboard() {
     val view = this.currentFocus
