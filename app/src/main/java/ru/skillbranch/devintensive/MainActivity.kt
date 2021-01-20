@@ -3,6 +3,7 @@ package ru.skillbranch.devintensive
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -18,7 +19,7 @@ import ru.skillbranch.devintensive.extensions.isKeyboardOpen
 import ru.skillbranch.devintensive.models.Bender
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
     lateinit var messageEt: EditText
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         messageEt = et_message
         sendBtn = iv_send
 
+        makeSendOnActionDone(messageEt)
+
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
         benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
@@ -45,8 +48,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
-        messageEt.setOnEditorActionListener(this)
+        // messageEt.setOnEditorActionListener(this)
 
+    }
+
+    private fun makeSendOnActionDone(editText: EditText) {
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) sendBtn.performClick()
+            false
+        }
     }
 
     override fun onRestart() {
@@ -97,18 +108,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         }
     }
 
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        return if (actionId == EditorInfo.IME_ACTION_DONE && messageEt.text.isNotEmpty()) {
-            val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
-            messageEt.setText("")
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
-            hideKeyboard()
-            true
-        } else {
-            false
-        }
-    }
+    //override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+    //    return if (actionId == EditorInfo.IME_ACTION_DONE && messageEt.text.isNotEmpty()) {
+    //        val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
+    //        messageEt.setText("")
+    //        val (r, g, b) = color
+    //        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+    //        textTxt.text = phrase
+    //        hideKeyboard()
+    //        true
+    //    } else {
+    //        false
+    //    }
+    //}
 }
 
